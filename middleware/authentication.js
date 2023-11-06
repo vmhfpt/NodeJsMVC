@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 function authLogin(req, res, next){
-     //next();
+   //   next();
+   //   return true;
      const authHeader = req.header('authorization');
       const token = authHeader && authHeader.split(' ')[1];
       if(token == null){
-        return res.status(403).json({status : 'error' , message : 'token is empty or invalid'});
+        return res.status(403).json({status : 'error' , message : 'Token is empty or invalid'});
       }
       try {
          const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);

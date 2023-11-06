@@ -27,6 +27,12 @@ module.exports = {
       isbn: {
         type: Sequelize.STRING
       },
+      image: {
+        type: Sequelize.STRING
+      },
+      content : {
+        type: Sequelize.TEXT('long')
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

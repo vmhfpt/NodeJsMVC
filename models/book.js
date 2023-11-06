@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Book.belongsTo(models.categories, {
+        foreignKey: 'category_id'
+      });
     }
   }
   Book.init({
@@ -18,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     slug: DataTypes.STRING(255),
     author: DataTypes.STRING(255),
     isbn: DataTypes.STRING(255),
+    image: DataTypes.STRING(255),
+    content : DataTypes.TEXT('long'),
     year : DataTypes.INTEGER,
     category_id : DataTypes.INTEGER
   }, {

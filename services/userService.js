@@ -28,5 +28,17 @@ class userService {
         });
         return deleteUser;
     }
+    async findByIdAndUpdateToken(id, payload){
+        const update = await User.update(payload , {
+            where: {
+              id : id
+            }
+        });
+        return update;
+    }
+    async login(email){
+        const login = await User.findOne({ where: { email: email } });
+        return login;
+    }
 }
 module.exports = new userService();

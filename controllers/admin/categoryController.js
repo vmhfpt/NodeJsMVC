@@ -2,7 +2,12 @@ const slug = require('slug');
 const categoryService = require('../../services/categoryService');
 class CategoryController {
    async index(req, res){
-      return res.send('get list');
+      try {
+        const dataItem = await categoryService.getAll();
+        return res.status(200).json(dataItem);
+      } catch (error) {
+        return res.status(500).json({status : 'error', error});
+      }
    }
    async create(req, res){
         const payload = {
@@ -18,14 +23,34 @@ class CategoryController {
             return res.status(500).json({status: 'error',  error});
         }
    }
+   
+   async findOne(req, res){
+        try {
+            const dataItem = await categoryService.findOneById(req.params.id);
+            return res.status(200).json(dataItem);
+        } catch (error) {
+            return res.status(500).json({status : 'error', error});
+        }
+   }
    async update(req, res){
-    return res.send('update category');
+        try {
+            let payload = {
+                ...req.body,
+                slug : slug(req.body.name)
+            };
+            const dataUpdate = await categoryService.findByIdAndUpdate(req.params.id, payload);
+            return res.status(200).json({status : 'success', data : dataUpdate});
+        } catch (error) {
+            return res.status(500).json({status : 'error', error});
+        }
    }
    async delete(req, res){
-    return res.send('delete category');
-   }
-   async findOne(req, res){
-    return res.send('find a category by id');
+        try {
+            const dataDelete = await categoryService.deleteById(req.params.id);
+            return res.status(200).json({status : 'success', data : dataDelete});
+        } catch (error) {
+            return res.status(500).json({status : 'error', error});
+        }
    }
 }
 module.exports = new CategoryController();

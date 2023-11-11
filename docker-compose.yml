@@ -1,0 +1,41 @@
+services:
+  app:
+    image: node:18-alpine
+    command: sh -c "yarn install && yarn start"
+    ports:
+      - 127.0.0.1:3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: nodejs
+    networks:
+      - node-network
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: nodejs
+    networks:
+      - node-network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - 8081:80
+    depends_on:
+      - mysql
+    networks:
+      - node-network
+volumes:
+  todo-mysql-data:
+networks:
+  node-network:
